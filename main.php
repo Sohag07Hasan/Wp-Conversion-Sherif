@@ -14,3 +14,6 @@ define("WPCONVERSIONSHERIF_URL", plugins_url('/', __FILE__));
 include WPCONVERSIONSHERIF_DIR . '/classes/sherifs-admin-area.php';
 wp_sherif_conversion_admin::init();
 
+include WPCONVERSIONSHERIF_DIR . '/classes/custom-posttype.php';
+wp_sherif_conversion_posttype::init();
+
