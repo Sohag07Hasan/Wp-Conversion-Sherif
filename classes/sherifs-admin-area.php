@@ -131,6 +131,22 @@ class wp_sherif_conversion_admin{
 	}
 	
 	
+	//save the second tab form data
+	static function save_tab2(){
+		$title = trim($_POST['campaign-title']);
+		$post_id = trim($_POST['existing_campaign']);
+		if(empty($post_id)){
+			$redirect_url = admin_url('admin.php?page=wp_conversion_sherif_menu&action=new&msg=3&tab=1');
+			return self::do_redirect($redirect_url);
+		}
+
+		update_post_meta($post_id, 'cookie-excludes-checkbox', $_POST['cookie-excludes-checkbox']);
+		update_post_meta($post_id, 'cookie-includes-checkbox', $_POST['cookie-excludes-checkbox']);
+		update_post_meta($post_id, 'cookie-includes-post-checkbox', $_POST['cookie-excludes-checkbox']);
+		update_post_meta($post_id, 'cookie-time', $_POST['cookie-excludes-checkbox']);		
+	}
+	
+	
 	
 	//do a redirect
 	static function do_redirect($url = null){

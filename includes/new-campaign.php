@@ -18,7 +18,7 @@
 				$message = '';
 				break;
 			case 3 :
-				$message = '';
+				$message = '<div class="campaign-error"><p> Please Create a new campaign and then set the cookie options.. </p></div>';
 				break;
 		}
 	
@@ -78,6 +78,20 @@
 		font-family: sans-serif;
     	font-size: 12px;
     	line-height: 1.4em;
+	}
+	
+	.campaign-error{
+		margin: 5px 0 15px;
+		background-color: #FFEBE8;
+   		border-color: #CC0000;;
+		padding: 0 0.6em;
+		border-radius: 3px 3px 3px 3px;
+   		border-style: solid;
+    	border-width: 1px;
+		color: #333333;
+		font-family: sans-serif;
+    	font-size: 12px;
+    	line-height: 1.4em;	
 	}
 	
 </style>

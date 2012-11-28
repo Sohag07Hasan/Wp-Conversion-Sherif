@@ -1,3 +1,11 @@
+<?php 
+	if($post){
+		
+	}
+?>
+
+
+
 <style>
 	.content_title span{
 		font-size: 20px;
