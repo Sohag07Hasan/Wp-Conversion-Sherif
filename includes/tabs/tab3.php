@@ -1,3 +1,10 @@
+<?php 
+	if($post){
+		$post_meta = get_post_custom($post->ID);
+		//var_dump($post_meta);
+	}
+?>
+
 
 <style>
 	.content_title span{
@@ -33,7 +40,8 @@
 	
 </style>
 
-
+<!-- tab identifier -->
+<input type="hidden" name="tab_number" value="3" />
 
 <div class="content-area-div">
 	
@@ -43,17 +51,17 @@
 			<p class="text-before-textarea-big"> What Url's Do You Want Your Campaign To Appear On? </p>
 			<p class="text-before-textarea-small"> (You can leave this section balnk if you are going to use the shortcode or widget area to display your campaign) </p>
 			
-			<p> <input type="checkbox" name="campaign-appering[]" value="1" id="everyurlsitewise" /> <label for="everyurlsitewise"> Every url sitewide </label></p>	
-			<p> <input type="checkbox" name="campaign-appering[]" value="2" id="allpages" /> <label for="allpages"> All Pages</label> </p>	
-			<p> <input type="checkbox" name="campaign-appering[]" value="3" id="allposts" /> <label for="allposts"> All posts </label> </p>	
-			<p> <input type="checkbox" name="campaign-appering[]" value="4" id="postswiththefollowingtags" > <label for="postswiththefollowingtags">Posts with the following Tags </label> <br> (Seperate tags with comma) </p>			
+			<p> <input <?php checked('Y', $post_meta["display-site-wise"][0]);?> type="checkbox" name="display-site-wise" value="Y" id="everyurlsitewise" /> <label for="everyurlsitewise"> Every url sitewide </label></p>	
+			<p> <input  <?php checked('Y', $post_meta["display-allpages"][0]);?> type="checkbox" name="display-allpages" value="Y" id="allpages" /> <label for="allpages"> All Pages</label> </p>	
+			<p> <input  <?php checked('Y', $post_meta["display-allposts"][0]);?> type="checkbox" name="display-allposts" value="Y" id="allposts" /> <label for="allposts"> All posts </label> </p>	
+			<p> <input  <?php checked('Y', $post_meta["display-following-tags"][0]);?> type="checkbox" name="display-following-tags" value="Y" id="postswiththefollowingtags" > <label for="postswiththefollowingtags">Posts with the following Tags </label> <br> (Seperate tags with comma) </p>			
 			
 			<textarea name="campaign-shown-tags" rows="5" cols="100" ></textarea>
 			
 		</li>
 		
 		<li>
-			<p> <input type="checkbox" name="" id="followingpermalink"> <label for="followingpermalink"> The following permalinks </label><br> (Seperate tags with comma) </p>
+			<p> <input  <?php checked('Y', $post_meta['display-follwing-permalinks'][0]);?> value="Y" type="checkbox" name="display-follwing-permalinks" id="followingpermalink"> <label for="followingpermalink"> The following permalinks </label><br> (Seperate tags with comma) </p>
 			
 			<textarea name="campaign-shown-permalinks" rows="5" cols="100" ></textarea>
 			
@@ -66,16 +74,16 @@
 		
 		<table class="form-table">
 			<tr>
-				<td> <input type="checkbox" name="campaignposition[]" value="1" id="topofheader" /> <label for="topofheader">Top of Header</label> </td>
-				<td> <input type="checkbox" name="campaignposition[]" value="4" id="bottomofthecontent" > <label for="bottomofthecontent">Bottom of the content</label> </td>
+				<td> <input  <?php checked('Y', $post_meta['display-top-header'][0]);?> type="checkbox" name="display-top-header" value="Y" id="topofheader" /> <label for="topofheader">Top of Header</label> </td>
+				<td> <input  <?php checked('Y', $post_meta['display-bottom-content'][0]);?> type="checkbox" name="display-bottom-content" value="Y" id="bottomofthecontent" > <label for="bottomofthecontent">Bottom of the content</label> </td>
 			</tr>
 			<tr>
-				<td> <input type="checkbox" name="campaignposition[]" value="2" id="bottomofheader"><label for="bottomofheader"> Bottom of Header</label> </td>
-				<td> <input type="checkbox" name="campaignposition[]" value="5" id="topofthefooter"><label for="topofthefooter"> Top of the footer</label> </td>
+				<td> <input  <?php checked('Y', $post_meta['display-bottom-header'][0]);?> type="checkbox" name="display-bottom-header" value="Y" id="bottomofheader"><label for="bottomofheader"> Bottom of Header</label> </td>
+				<td> <input <?php checked('Y', $post_meta['display-top-footer'][0]);?> type="checkbox" name="display-top-footer" value="Y" id="topofthefooter"><label for="topofthefooter"> Top of the footer</label> </td>
 			</tr>
 			<tr>
-				<td> <input type="checkbox" name="campaignposition[]" value="3" id="topofthecontent" ><label for="topofthecontent"> Top of the content</label> </td>
-				<td> <input type="checkbox" name="campaignposition[]" value="6" id="bottomofthefooter" ><label for="bottomofthefooter"> Bottom of the footer</label> </td>
+				<td> <input  <?php checked('Y', $post_meta['display-top-content'][0]);?> type="checkbox" name="display-top-content" value="Y" id="topofthecontent" ><label for="topofthecontent"> Top of the content</label> </td>
+				<td> <input <?php checked('Y', $post_meta['display-bottom-footer'][0]);?>  type="checkbox" name="display-bottom-footer" value="Y" id="bottomofthefooter" ><label for="bottomofthefooter"> Bottom of the footer</label> </td>
 			</tr>
 		</table>
 			

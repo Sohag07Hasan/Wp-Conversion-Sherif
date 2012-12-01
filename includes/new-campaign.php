@@ -15,10 +15,16 @@
 				$message = '<div class="campaign-updated"><p> Campaign Saved.. </p></div>';
 				break;
 			case 2 :
-				$message = '';
+				$message = '<div class="campaign-error"><p> Please Create a new campaign and then set the display options.. </p></div>';
 				break;
 			case 3 :
 				$message = '<div class="campaign-error"><p> Please Create a new campaign and then set the cookie options.. </p></div>';
+				break;
+			case 4 :
+				$message = '<div class="campaign-updated"><p> Options for Cookie are Saved.. </p></div>';;
+				break;
+			case 5 :
+				$message = '<div class="campaign-updated"><p> Options for Display are Saved.. </p></div>';;
 				break;
 		}
 	

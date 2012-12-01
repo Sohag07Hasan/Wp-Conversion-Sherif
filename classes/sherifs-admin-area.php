@@ -7,8 +7,7 @@ class wp_sherif_conversion_admin{
 	
 	static function init(){
 		add_action('admin_menu', array(get_class(), 'create_admin_menu'));
-		//add_action('admin_enqueue_scripts', array(get_class(), 'admin_css_js'));
-		
+		//add_action('admin_enqueue_scripts', array(get_class(), 'admin_css_js'));		
 		add_action('init', array(get_class(), 'form_submission_handler'));
 	}
 	
@@ -133,19 +132,115 @@ class wp_sherif_conversion_admin{
 	
 	//save the second tab form data
 	static function save_tab2(){
-		$title = trim($_POST['campaign-title']);
+		//$title = trim($_POST['campaign-title']);
 		$post_id = trim($_POST['existing_campaign']);
 		if(empty($post_id)){
 			$redirect_url = admin_url('admin.php?page=wp_conversion_sherif_menu&action=new&msg=3&tab=1');
 			return self::do_redirect($redirect_url);
 		}
-
+		
 		update_post_meta($post_id, 'cookie-excludes-checkbox', $_POST['cookie-excludes-checkbox']);
-		update_post_meta($post_id, 'cookie-includes-checkbox', $_POST['cookie-excludes-checkbox']);
-		update_post_meta($post_id, 'cookie-includes-post-checkbox', $_POST['cookie-excludes-checkbox']);
-		update_post_meta($post_id, 'cookie-time', $_POST['cookie-excludes-checkbox']);		
+		update_post_meta($post_id, 'cookie-includes-checkbox', $_POST['cookie-includes-checkbox']);
+		update_post_meta($post_id, 'cookie-includes-post-checkbox', $_POST['cookie-includes-post-checkbox']);
+		update_post_meta($post_id, 'cookie-time', $_POST['cookie-time']);
+		
+		//cookie excluding settings
+		if($_POST['cookie-excludes-checkbox'] == 'Y'){
+			$action = 'e';			
+			$cookie_excludes = explode(',', $_POST['cookie-excludes']);
+			
+			//remove the existing records
+			wp_sherif_conversion_db::remove_existing_records_cookie_table($action, $post_id, 'permalink-tag');
+			
+			if(count($cookie_excludes)){
+				$cookie_excludes = array_unique($cookie_excludes);
+				foreach($cookie_excludes as $cookie_exclude){
+					wp_sherif_conversion_db::insert_a_cookie_record(trim($cookie_exclude), $action);
+				}
+			}
+		}
+		
+		//include cookie settings
+		if($_POST['cookie-includes-checkbox'] == 'Y'){
+			$action = 'i';	
+			$cookie_includes = explode(',', $_POST['cookie-includes']);
+			
+			wp_sherif_conversion_db::remove_existing_records_cookie_table($action, $post_id, 'category-tag');
+			
+			if(count($cookie_includes)){
+				$cookie_includes = array_unique($cookie_includes);
+				foreach($cookie_includes as $cookie_include){
+					$type = '';
+					$cookie_include = trim($cookie_include);
+					
+					if(term_exists($cookie_include, 'post_tag')){
+						$type = 'tag';
+					}
+					if(term_exists($cookie_include, 'category')){
+						$type = 'category';
+					}
+															
+					if($type){
+						wp_sherif_conversion_db::insert_cookie($type, trim($cookie_include), $action);
+					}
+					
+				}
+			}
+		}
+		
+		
+		//include posts with thes permalinks
+		if($_POST['cookie-includes-post-checkbox'] == 'Y'){
+			$action = 'i';	
+			$including_links = explode(',', $_POST['cookie-includes-permalinks']);
+			
+			wp_sherif_conversion_db::remove_existing_records_cookie_table($action, $post_id, 'permalink');
+			
+			if(count($including_links)){
+				$including_links = array_unique($including_links);
+				foreach($including_links as $including_link){
+					if(wp_sherif_conversion_db::is_url($including_link)){
+						wp_sherif_conversion_db::insert_cookie('permalink', trim($including_link), $action);	
+					}													
+				}
+			}
+		}
+		
+		
+		
+		
+		$redirect_url = admin_url('admin.php?page=wp_conversion_sherif_menu&action=new&msg=4&tab=2&cid=') . $post_id;
+		return self::do_redirect($redirect_url);
 	}
 	
+	
+	
+	//save the form from tab3
+	static function save_tab3(){
+		$post_id = trim($_POST['existing_campaign']);
+		if(empty($post_id)){
+			$redirect_url = admin_url('admin.php?page=wp_conversion_sherif_menu&action=new&msg=2&tab=1');
+			return self::do_redirect($redirect_url);
+		}
+		
+		
+		
+		update_post_meta($post_id, 'display-site-wise', $_POST['display-site-wise']);
+		update_post_meta($post_id, 'display-allpages', $_POST['display-allpages']);
+		update_post_meta($post_id, 'display-allposts', $_POST['display-allposts']);
+		update_post_meta($post_id, 'display-following-tags', $_POST['display-following-tags']);
+		update_post_meta($post_id, 'display-follwing-permalinks', $_POST['display-follwing-permalinks']);
+		
+		update_post_meta($post_id, 'display-top-header', $_POST['display-top-header']);
+		update_post_meta($post_id, 'display-bottom-content', $_POST['display-bottom-content']);
+		update_post_meta($post_id, 'display-bottom-header', $_POST['display-bottom-header']);
+		update_post_meta($post_id, 'display-top-footer', $_POST['display-top-footer']);
+		update_post_meta($post_id, 'display-top-content', $_POST['display-top-content']);
+		update_post_meta($post_id, 'display-bottom-footer', $_POST['display-bottom-footer']);
+		
+		$redirect_url = admin_url('admin.php?page=wp_conversion_sherif_menu&action=new&msg=5&tab=3&cid=') . $post_id;
+		return self::do_redirect($redirect_url);
+	}
 	
 	
 	//do a redirect
