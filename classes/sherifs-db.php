@@ -16,7 +16,7 @@ class wp_sherif_conversion_db{
 		$tables = self::get_tables_name();
 		extract($tables);
 		
-		$sql = "CREATE TABLE IF NOT EXISTS $cookie(
+		$sql[] = "CREATE TABLE IF NOT EXISTS $cookie(
 				ID bigint unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
 				content text(100) NOT NULL,
 				type varchar(30) NOT NULL,
@@ -24,11 +24,20 @@ class wp_sherif_conversion_db{
 				action varchar(30) NOT NULL	 			
 			)";
 		
+		$sql[] = "CREATE TABLE IF NOT EXISTS $display(
+				ID bigint unsigned NOT NULL AUTO_INCREMENT PRIMARY KEY,
+				content text(100) NOT NULL,
+				type varchar(30) NOT NULL,
+				camp_id bigint unsigned NOT NULL				 			
+			)";
+		
 		if(!function_exists('dbDelta')) :
 			include ABSPATH . 'wp-admin/includes/upgrade.php';
 		endif;
+		foreach($sql as $s){
+			dbDelta($s);
+		}
 		
-		dbDelta($sql);
 	}
 	
 	
@@ -184,6 +193,47 @@ class wp_sherif_conversion_db{
 		
 		
 		$wpdb->query($sql);
+	}
+	
+	
+	
+	//display table settings
+	static function insert_into_display($d_tag, $type, $camp_id){
+		global $wpdb;
+		$tables = self::get_tables_name();	
+		extract($tables);
+			
+		return $wpdb->insert($display, array('content' => $d_tag, 'type' => $type, 'camp_id' => (int)$camp_id), array('%s', '%s', '%d'));
+	}
+	
+	//rem,ove the display table's existing data
+	static function remove_dispaly_tables_existing_data($camp_id, $type){
+		global $wpdb;
+		$tables = self::get_tables_name();
+		extract($tables);
+		$camp_id = (int) $camp_id;
+		
+		$sql = "DELETE FROM $display WHERE camp_id = $camp_id AND type = '$type'";
+		$wpdb->query($sql);
+	}
+	
+	
+	//return the display terms of the posts
+	static function get_records_from_display_table($camp_id, $type){
+		global $wpdb;
+		$tables = self::get_tables_name();
+		extract($tables);
+		$camp_id = (int) $camp_id;
+		
+		$sql = "SELECT content FROM $display WHERE camp_id = $camp_id AND type = '$type'";
+		
+		$return = $wpdb->get_col($sql);
+		if($return){
+			return implode(', ', $return);
+		}
+		
+		return '';
+		
 	}
 	
 }

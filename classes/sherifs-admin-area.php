@@ -238,6 +238,42 @@ class wp_sherif_conversion_admin{
 		update_post_meta($post_id, 'display-top-content', $_POST['display-top-content']);
 		update_post_meta($post_id, 'display-bottom-footer', $_POST['display-bottom-footer']);
 		
+		
+		//including the tags
+		if($_POST['display-following-tags'] == 'Y'){
+			$display_tags = explode(',', trim($_POST['campaign-shown-tags']));
+			wp_sherif_conversion_db::remove_dispaly_tables_existing_data($post_id, 'tag');
+						
+			
+			if(count($display_tags) > 0){
+				foreach ($display_tags as $d_tag){
+					$d_tag = trim($d_tag);
+					if(term_exists(trim($d_tag), 'post_tag')){
+						wp_sherif_conversion_db::insert_into_display(trim($d_tag), 'tag', $post_id);
+					}
+				}
+			}
+		}
+		
+		
+		//includeing the permalinks of a certain post
+		if($_POST['display-follwing-permalinks'] == 'Y'){
+			$display_permalinks = explode(',', $_POST['campaign-shown-permalinks']);			
+			wp_sherif_conversion_db::remove_dispaly_tables_existing_data($post_id, 'permalink');
+			
+			if(count($display_permalinks) > 0){
+				foreach($display_permalinks as $link){
+					$link = trim($link);
+					if(wp_sherif_conversion_db::is_url($link)){
+						wp_sherif_conversion_db::insert_into_display(trim($link), 'permalink', $post_id);
+					}					
+				}
+			}
+		}
+		
+		
+		
+		
 		$redirect_url = admin_url('admin.php?page=wp_conversion_sherif_menu&action=new&msg=5&tab=3&cid=') . $post_id;
 		return self::do_redirect($redirect_url);
 	}

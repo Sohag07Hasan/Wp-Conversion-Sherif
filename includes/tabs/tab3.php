@@ -2,6 +2,8 @@
 	if($post){
 		$post_meta = get_post_custom($post->ID);
 		//var_dump($post_meta);
+		$terms = wp_sherif_conversion_db::get_records_from_display_table($post->ID, 'tag');
+		$permalinks = wp_sherif_conversion_db::get_records_from_display_table($post->ID, 'permalink');
 	}
 ?>
 
@@ -54,16 +56,16 @@
 			<p> <input <?php checked('Y', $post_meta["display-site-wise"][0]);?> type="checkbox" name="display-site-wise" value="Y" id="everyurlsitewise" /> <label for="everyurlsitewise"> Every url sitewide </label></p>	
 			<p> <input  <?php checked('Y', $post_meta["display-allpages"][0]);?> type="checkbox" name="display-allpages" value="Y" id="allpages" /> <label for="allpages"> All Pages</label> </p>	
 			<p> <input  <?php checked('Y', $post_meta["display-allposts"][0]);?> type="checkbox" name="display-allposts" value="Y" id="allposts" /> <label for="allposts"> All posts </label> </p>	
-			<p> <input  <?php checked('Y', $post_meta["display-following-tags"][0]);?> type="checkbox" name="display-following-tags" value="Y" id="postswiththefollowingtags" > <label for="postswiththefollowingtags">Posts with the following Tags </label> <br> (Seperate tags with comma) </p>			
+			<p> <input  <?php checked('Y', $post_meta["display-following-tags"][0]);?> type="checkbox" name="display-following-tags" value="Y" id="postswiththefollowingtags" > <label for="postswiththefollowingtags">Posts with the following Tags </label> (Seperate tags with comma) </p>			
 			
-			<textarea name="campaign-shown-tags" rows="5" cols="100" ></textarea>
+			<textarea name="campaign-shown-tags" rows="5" cols="100" ><?php echo $terms; ?></textarea>
 			
 		</li>
 		
 		<li>
-			<p> <input  <?php checked('Y', $post_meta['display-follwing-permalinks'][0]);?> value="Y" type="checkbox" name="display-follwing-permalinks" id="followingpermalink"> <label for="followingpermalink"> The following permalinks </label><br> (Seperate tags with comma) </p>
+			<p> <input  <?php checked('Y', $post_meta['display-follwing-permalinks'][0]);?> value="Y" type="checkbox" name="display-follwing-permalinks" id="followingpermalink"> <label for="followingpermalink"> The following permalinks </label> (Seperate links with comma) </p>
 			
-			<textarea name="campaign-shown-permalinks" rows="5" cols="100" ></textarea>
+			<textarea name="campaign-shown-permalinks" rows="5" cols="100" ><?php echo $permalinks; ?></textarea>
 			
 		</li>
 				

@@ -65,7 +65,15 @@ class wp_sherif_conversion_posttype{
 	
 	//delete selected campaign
 	static function delete_the_campaign(){
+		global $wpdb;
+		$tables = wp_sherif_conversion_db::get_tables_name();
+		extract($tables);
+		
 		$post_id = (int) $_GET['cid'];
-		return wp_delete_post($post_id, true);
+		wp_delete_post($post_id, true);
+		
+		$sql = "DELETE FROM $cookie WHERE camp_id = $post_id ";
+		$wpdb->query($sql);
+		
 	}
 }
