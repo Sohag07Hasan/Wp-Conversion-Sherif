@@ -72,8 +72,13 @@ class wp_sherif_conversion_posttype{
 		$post_id = (int) $_GET['cid'];
 		wp_delete_post($post_id, true);
 		
-		$sql = "DELETE FROM $cookie WHERE camp_id = $post_id ";
-		$wpdb->query($sql);
+		$sql[] = "DELETE FROM $cookie WHERE camp_id = $post_id ";
+		$sql[] = "DELETE FROM $display WHERE camp_id = $post_id ";
+		
+		foreach($sql as $s){
+			$wpdb->query($s);
+		}
+		
 		
 	}
 }
