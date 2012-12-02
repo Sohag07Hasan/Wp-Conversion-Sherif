@@ -9,6 +9,17 @@ class wp_sherif_conversion_admin{
 		add_action('admin_menu', array(get_class(), 'create_admin_menu'));
 		//add_action('admin_enqueue_scripts', array(get_class(), 'admin_css_js'));		
 		add_action('init', array(get_class(), 'form_submission_handler'));
+		
+		add_action('widgets_init', array(get_class(), 'register_search_widget_area'));
+	}
+	
+	
+	//register a new widget area to accommodate the search widget
+	static function register_search_widget_area(){		
+		include WPCONVERSIONSHERIF_DIR . '/classes/widget-campaign.php';
+		if(class_exists('wp_sherif_conversion_widget')){
+			register_widget( 'wp_sherif_conversion_widget' );
+		}
 	}
 	
 	
