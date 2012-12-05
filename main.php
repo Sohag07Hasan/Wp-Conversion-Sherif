@@ -19,3 +19,7 @@ wp_sherif_conversion_posttype::init();
 
 include WPCONVERSIONSHERIF_DIR . '/classes/sherifs-db.php';
 wp_sherif_conversion_db::init();
+
+
+include WPCONVERSIONSHERIF_DIR . '/classes/front-end.php';
+wp_sherif_conversion_frontend::init();
