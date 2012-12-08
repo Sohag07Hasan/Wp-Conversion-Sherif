@@ -61,14 +61,8 @@
 			<textarea name="campaign-shown-tags" rows="5" cols="100" ><?php echo $terms; ?></textarea>
 			
 		</li>
-		
-		<li>
-			<p> <input  <?php checked('Y', $post_meta['display-follwing-permalinks'][0]);?> value="Y" type="checkbox" name="display-follwing-permalinks" id="followingpermalink"> <label for="followingpermalink"> The following permalinks </label> (Seperate links with comma) </p>
-			
-			<textarea name="campaign-shown-permalinks" rows="5" cols="100" ><?php echo $permalinks; ?></textarea>
-			
-		</li>
 				
+		 	
 	</ul>
 	
 	<div class="">
@@ -77,16 +71,20 @@
 		<table class="form-table">
 			<tr>
 				<td> <input  <?php checked('Y', $post_meta['display-top-header'][0]);?> type="checkbox" name="display-top-header" value="Y" id="topofheader" /> <label for="topofheader">Top of Header</label> </td>
-				<td> <input  <?php checked('Y', $post_meta['display-bottom-content'][0]);?> type="checkbox" name="display-bottom-content" value="Y" id="bottomofthecontent" > <label for="bottomofthecontent">Bottom of the content</label> </td>
 			</tr>
-			<tr>
-				<td> <input  <?php checked('Y', $post_meta['display-bottom-header'][0]);?> type="checkbox" name="display-bottom-header" value="Y" id="bottomofheader"><label for="bottomofheader"> Bottom of Header</label> </td>
-				<td> <input <?php checked('Y', $post_meta['display-top-footer'][0]);?> type="checkbox" name="display-top-footer" value="Y" id="topofthefooter"><label for="topofthefooter"> Top of the footer</label> </td>
-			</tr>
+			
 			<tr>
 				<td> <input  <?php checked('Y', $post_meta['display-top-content'][0]);?> type="checkbox" name="display-top-content" value="Y" id="topofthecontent" ><label for="topofthecontent"> Top of the content</label> </td>
-				<td> <input <?php checked('Y', $post_meta['display-bottom-footer'][0]);?>  type="checkbox" name="display-bottom-footer" value="Y" id="bottomofthefooter" ><label for="bottomofthefooter"> Bottom of the footer</label> </td>
 			</tr>
+			
+			<tr>
+				<td> <input <?php checked('Y', $post_meta['display-top-footer'][0]);?> type="checkbox" name="display-top-footer" value="Y" id="topofthefooter"><label for="topofthefooter"> Footer</label> </td>
+			</tr>
+			
+			<tr>
+				<td> <input  <?php checked('Y', $post_meta['display-above-commentarea'][0]);?> type="checkbox" name="display-above-commentarea" value="Y" id="display-above-commentarea" ><label for="display-above-commentarea"> Above Comment area</label> </td>
+			</tr>			
+			
 		</table>
 			
 	</div>

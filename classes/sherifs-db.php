@@ -60,7 +60,7 @@ class wp_sherif_conversion_db{
 			//var_dump($keyword);
 			//die();
 		}
-		elseif(is_tag($keyword)){
+		elseif(term_exists($keyword, 'post_tag')){
 			$type = 'tag';
 		}
 		/*

@@ -1,12 +1,17 @@
 <?php
+
+	ob_start();	
+
 /*
  * handles the cookies and display
  * */
 
-class wp_sherif_conversion_frontend{
+class wp_sherif_conversion_frontend_cookie{
 	
 	//some variable sto store the importenat data
 	static $current_url;
+	static $current_post = null;
+	static $terms = array();
 	
 	const cookie_name = "wp_sherif_conversion_";
 	
@@ -15,7 +20,34 @@ class wp_sherif_conversion_frontend{
 	 * */
 	static function init(){
 		//add_action('init', array(get_class(), 'permalink_cookie'));
-		add_filter('the_content', array(get_class(), 'set_cookie_for_post'));
+		add_filter('the_content', array(get_class(), 'parse_query'));
+		
+		//add_action('the_posts', array(get_class(), 'parse_query'), 100);
+		
+		add_action('wp_footer', array(get_class(), 'make_action_to_set_cookie'), 100);
+	}
+	
+	static function parse_query($content){
+		
+		if(is_single() || is_page()) {
+			
+			global $post;
+			self::$current_post = $post;
+			self::$terms = wp_get_object_terms($post->ID, array('category', 'post_tag'));			
+		
+		}
+		
+		return $content;
+		
+	}
+	
+	
+	static function make_action_to_set_cookie(){
+		if(self::$current_post){
+			
+			//var_dump(self::$current_post);
+			self::set_cookie_for_post($post);
+		}
 	}
 	
 	
@@ -62,10 +94,12 @@ class wp_sherif_conversion_frontend{
 	/*
 	 * static function 
 	 * */
-	static function set_cookie_for_post($content){
+	static function set_cookie_for_post($post){
+		
+		//var_dump(self::$current_post); die();
 		
 		if(is_single() || is_page()){
-			global $wpdb, $post;
+			global $wpdb;
 			
 			$tables = wp_sherif_conversion_db::get_tables_name();
 			extract($tables);
@@ -82,7 +116,11 @@ class wp_sherif_conversion_frontend{
 			
 			
 			//category and tag checking
-			$terms = wp_get_object_terms($post->ID, array('category', 'post_tag'));				
+			//$terms = wp_get_object_terms($post->ID, array('category', 'post_tag'));
+			$terms = self::$terms;
+			
+			//var_dump($terms);
+			
 			if($terms){
 				$term_names = array();
 				foreach($terms as $term){
@@ -91,31 +129,30 @@ class wp_sherif_conversion_frontend{
 							
 			
 				foreach($term_names as $taxonomy => $term_name) :
+					$tax = ($taxonomy == 'post_tag') ? 'tag' : $taxonomy;
 					foreach($term_name as $tn) {
 						$sql = "SELECT * FROM $cookie WHERE camp_id in (
 							SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'cookie-excludes-checkbox' AND meta_value = 'Y'
-						) AND type = '$taxonomy' AND action = 'e' AND content = '$tn'";
+						) AND type = '$tax' AND action = 'e' AND content = '$tn'";
 						
 						if($wpdb->get_results($sql)) return $content;
 					}					
 					
 				endforeach;				
 				
+				
+				//terms and categories inclusion
 				foreach($term_names as $taxonomy => $term_name) :
-					
+					$tax = ($taxonomy == 'post_tag') ? 'tag' : $taxonomy;
 					foreach($term_name as $tn) {
 						
 						$sql = "SELECT camp_id FROM $cookie WHERE camp_id in (
-							SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'cookie-excludes-checkbox' AND meta_value = 'Y'
-						) AND type = '$taxonomy' AND action = 'i' AND content = '$tn' ";
+							SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'cookie-includes-checkbox' AND meta_value = 'Y'
+						) AND type = '$tax' AND action = 'i' AND content = '$tn' ";
 						
 						$campaigns = $wpdb->get_col($sql);
+
 						
-						//var_dump($campaigns);
-						//var_dump($sql);
-						
-						
-						$cookie = array();
 						if($campaigns){
 							foreach($campaigns as $cam_id){
 								$cookie_time = get_post_meta($cam_id, 'cookie-time', true);
@@ -147,10 +184,12 @@ class wp_sherif_conversion_frontend{
 			
 			//if the permalinik is set to set teh cookie
 			$sql = "SELECT camp_id FROM $cookie WHERE camp_id in (
-				SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'cookie-excludes-checkbox' AND meta_value = 'Y'
+				SELECT post_id FROM $wpdb->postmeta WHERE meta_key = 'cookie-includes-post-checkbox' AND meta_value = 'Y'
 			) AND type = 'permalink' AND action = 'i' AND content = '$url'";
 		
 			$campaigns = $wpdb->get_col($sql);
+			
+		//	var_dump($campaigns);
 			
 			if($campaigns){
 				foreach ($campaigns as $cam_id){
@@ -181,9 +220,8 @@ class wp_sherif_conversion_frontend{
 			
 		}
 		
+			
 		
-		
-		return $content;
 	}
 	
 	
@@ -192,11 +230,15 @@ class wp_sherif_conversion_frontend{
 	 * setup cookie
 	 * */
 	static function set_cookie($time, $cam_id){
+		
+	
 		$name = self::cookie_name . $cam_id;
 		$time = time() + $time * 60 * 60;
-		if(isset($_COOKIE[$name])) return;
-				
-		return setcookie($name, $cam_id, $time);
+
+		
+		//var_dump($_COOKIE[$name]);
+		if(isset($_COOKIE[$name])) return;					
+		return setcookie($name, $cam_id, $time);			
 				
 	}
 	

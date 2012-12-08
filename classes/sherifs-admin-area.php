@@ -240,14 +240,14 @@ class wp_sherif_conversion_admin{
 		update_post_meta($post_id, 'display-allpages', $_POST['display-allpages']);
 		update_post_meta($post_id, 'display-allposts', $_POST['display-allposts']);
 		update_post_meta($post_id, 'display-following-tags', $_POST['display-following-tags']);
-		update_post_meta($post_id, 'display-follwing-permalinks', $_POST['display-follwing-permalinks']);
+		
 		
 		update_post_meta($post_id, 'display-top-header', $_POST['display-top-header']);
-		update_post_meta($post_id, 'display-bottom-content', $_POST['display-bottom-content']);
-		update_post_meta($post_id, 'display-bottom-header', $_POST['display-bottom-header']);
+				
 		update_post_meta($post_id, 'display-top-footer', $_POST['display-top-footer']);
 		update_post_meta($post_id, 'display-top-content', $_POST['display-top-content']);
-		update_post_meta($post_id, 'display-bottom-footer', $_POST['display-bottom-footer']);
+		
+		update_post_meta($post_id, 'display-above-commentarea', $_POST['display-above-commentarea']);
 		
 		
 		//including the tags

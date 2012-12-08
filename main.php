@@ -22,4 +22,8 @@ wp_sherif_conversion_db::init();
 
 
 include WPCONVERSIONSHERIF_DIR . '/classes/front-end.php';
-wp_sherif_conversion_frontend::init();
+wp_sherif_conversion_frontend_cookie::init();
+
+
+include WPCONVERSIONSHERIF_DIR . '/classes/front-end-display.php';
+wp_sherif_conversion_frontend_display::init();
