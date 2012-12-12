@@ -40,6 +40,10 @@
 		padding: 10px;
 	}
 	
+	.campaign_code_cpy{
+		color: #1E90FF;		
+	}
+	
 </style>
 
 <!-- tab identifier -->
@@ -91,10 +95,10 @@
 	
 	<div class="">
 		<p class="text-before-textarea-big"> Want to display your campaign some where other than the above options? </p>
-		<table class="form-table">
+		<table>
 			<tr>
 				<td> Cut and Paste this shot code any where on your site </td>
-				<td> [Sample_code=1] </td>
+				<td class="campaign_code_cpy"> <input type="text" readonly value="[Campaign_Code id=<?php echo $post->ID;?>]" />  </td>
 			</tr>
 			
 		</table>

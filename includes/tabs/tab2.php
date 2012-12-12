@@ -58,10 +58,10 @@
 	<ul type="square">
 		
 		<li>
-			<p class="text-before-textarea-big"> <input <?php checked('Y', $post_meta['cookie-excludes-checkbox'][0]);?> id="cookie-excludes-checkbox" type="checkbox" name="cookie-excludes-checkbox" value="Y" '> <label for="cookie-excludes-checkbox">... Visits anywhere on this website. Excluding the following permalinks or tags</label> </p>
-			<p class="text-before-textarea-small"> Add any permalinks or post tags that you want to exclude from this (<code>Seperate each with comma</code>) <br/> (<code>Leave blank if you don't want to exclude any urls from this rule</code>) </p>
+			<p class="text-before-textarea-big"> <input <?php checked('Y', $post_meta['cookie-excludes-checkbox'][0]);?> id="cookie-excludes-checkbox" type="checkbox" name="cookie-excludes-checkbox" value="Y" '> <label for="cookie-excludes-checkbox">... Visits anywhere on this website. <!-- Excluding the following permalinks or tags  --></label> </p>
+			<!-- <p class="text-before-textarea-small"> Add any permalinks or post tags that you want to exclude from this (<code>Seperate each with comma</code>) <br/> (<code>Leave blank if you don't want to exclude any urls from this rule</code>) </p>  -->
 			
-			<textarea name="cookie-excludes" rows="5" cols="103" ><?php echo $tag_permalink_excludes; ?></textarea>
+			<!-- <textarea name="cookie-excludes" rows="5" cols="103" ><?php //echo $tag_permalink_excludes; ?></textarea> -->
 			
 		</li>
 		

@@ -65,7 +65,12 @@ class wp_sherif_conversion_widget extends WP_Widget{
 		
 		echo $before_widget;
 		echo $before_title . $title . $after_title;
-			echo $post->post_title;
+			echo '<p>' . $post->post_title . '</p>';
+			
+			$campaign = wp_sherif_conversion_frontend_display::get_campaign_content($post->ID);
+			
+			echo '<p> ' . $campaign . ' </p>';
+			
 		echo $after_widget;
 	}
 	

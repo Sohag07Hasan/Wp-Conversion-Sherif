@@ -112,14 +112,10 @@ class wp_sherif_conversion_admin{
 	//save the tab1
 	static function save_tab1(){
 		$title = trim($_POST['campaign-title']);
-		$content = array(
-			'primary_content' => trim($_POST['primary_content']),
-			'secondary_content' => trim($_POST['secondary_content'])
-		);
 		
 		$post = array(
 			'post_title' => (empty($title)) ? 'Un Named' : $title,
-			'post_content' => serialize($content),
+			'post_content' => trim($_POST['primary_content']),
 			'post_type' => wp_sherif_conversion_posttype::posttype
 		);
 		
@@ -131,6 +127,7 @@ class wp_sherif_conversion_admin{
 		
 		$new_post_id = wp_insert_post($post);
 		if($new_post_id){
+			update_post_meta($new_post_id, 'secondary_campaign_content', trim($_POST['secondary_content']));
 			$redirect_url = admin_url('admin.php?page=wp_conversion_sherif_menu&action=new&msg=1&tab=1&cid=') . $new_post_id;
 		}
 		else{
