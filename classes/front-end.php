@@ -195,7 +195,7 @@ class wp_sherif_conversion_frontend_cookie{
 				endforeach;	
 			}				
 			
-			
+			$url = self::get_current_url();
 			
 			//if the permalinik is set to set teh cookie
 			$sql = "SELECT camp_id FROM $cookie WHERE camp_id in (
@@ -204,8 +204,9 @@ class wp_sherif_conversion_frontend_cookie{
 		
 			$campaigns = $wpdb->get_col($sql);
 			
-		//	var_dump($campaigns);
-			
+			//var_dump($campaigns);
+			//var_dump($url);
+			//die();
 			if($campaigns){
 				foreach ($campaigns as $cam_id){
 					$cookie_time = get_post_meta($cam_id, 'cookie-time', true);
